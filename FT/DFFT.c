@@ -421,7 +421,7 @@ void DFFT_butterfly_computation(st_complex *c1, st_complex *c2, int P, int N)
     c1->R = X1_R + T_R; //蝶形上+下
     c1->I = X1_I + T_I;
 
-    c2->R = X1_R - T_R; //蝶形下-上
+    c2->R = X1_R - T_R; //蝶形上-下
     c2->I = X1_I - T_I;
 
     // TODO 可以继续把复数的幅值和相角一起算了, 增加了计算量, 如果用不到可以不处理
