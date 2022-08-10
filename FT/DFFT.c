@@ -1,19 +1,4 @@
-#include <stdio.h>
-#include <math.h>
-#include <string.h>
-
-#define DBG_LOG 0
-#define PI (3.14159265359f)
-
-typedef unsigned int uint32_t;
-typedef struct
-{
-    float R; //实部
-    float I; //虚部
-    float M; //幅值, 频率谱
-    float S; //功率谱
-    float P; //相位
-} st_complex;
+#include "DFFT.h"
 
 /**
  * @brief  打印数值对应的二进制bit
@@ -50,6 +35,18 @@ void _print_float_array(const float *array, const uint32_t array_size)
 }
 
 /**
+ * @brief  打印复数型
+ * @note   各参数保留5位小数
+ * @param  *cpx:
+ * @retval None
+ */
+void _print_complex(const st_complex *cpx)
+{
+    printf("R:%.3f,I:%.3f,M:%.3f,S:%.3f,P:%.3frad\n",
+           cpx->R, cpx->I, cpx->M, cpx->S, cpx->P);
+}
+
+/**
  * @brief  打印复数型数组
  * @note   各参数保留5位小数
  * @param  *array:
@@ -59,8 +56,7 @@ void _print_float_array(const float *array, const uint32_t array_size)
 void _print_complex_array(const st_complex *array, const uint32_t array_size)
 {
     for (int i = 0; i < array_size; i++)
-        printf("R:%.3f,I:%.3f,M:%.3f,S:%.3f,P:%.3frad\n",
-               array[i].R, array[i].I, array[i].M, array[i].S, array[i].P);
+        _print_complex(&array[i]);
 }
 
 /**
@@ -490,8 +486,9 @@ void DFFT(st_complex *array, uint32_t array_size)
         }
     }
 }
-int main(int argc, char const *argv[])
-{
+
+// int main(int argc, char const *argv[])
+// {
     // const uint32_t input = 733077929;
     // reverse_bit_0(input, sizeof(input) * 8);
     // reverse_bit_1(input, sizeof(input) * 8);
@@ -525,18 +522,18 @@ int main(int argc, char const *argv[])
 
     // TODO 伪造测试用的ADC采样数据
     //实际为每一秒内的离散型采样值, 采样率=频率Hz, 值大小应符合ADC的bit深度,
-    int pow = 3;                          // 2的次幂, 3->8, 10->1024, 兼顾采样准确性和性能推荐1024或2048
-    int array_size = 1 << pow;            //保证大小是2的次幂
-    int sin_A = 0xFF;                     //正弦波幅值
-    st_complex adc_val_array[array_size]; //离散采样值对应的复数域只有纯实部
-    for (int i = 0; i < array_size; i++)
-    {
-        //只叠加一个固定频率正弦波
-        float PI_ratio = (float)i / (float)array_size * 2.0f;
-        float val = sin_A * sin(PI_ratio * PI);
-        st_complex cpx = {val};
-        adc_val_array[i] = cpx;
-        printf("%dsin(%.3fπ)=%.5f\n", sin_A, PI_ratio, val);
+    // int pow = 3;                          // 2的次幂, 3->8, 10->1024, 兼顾采样准确性和性能推荐1024或2048
+    // int array_size = 1 << pow;            //保证大小是2的次幂
+    // int sin_A = 0xFF;                     //正弦波幅值
+    // st_complex adc_val_array[array_size]; //离散采样值对应的复数域只有纯实部
+    // for (int i = 0; i < array_size; i++)
+    // {
+    //     //只叠加一个固定频率正弦波
+    //     float PI_ratio = (float)i / (float)array_size * 2.0f;
+    //     float val = sin_A * sin(PI_ratio * PI);
+    //     st_complex cpx = {val};
+    //     adc_val_array[i] = cpx;
+    //     printf("%dsin(%.3fπ)=%.5f\n", sin_A, PI_ratio, val);
 
         //叠加两个不同频率的正弦波
         // float PI_ratio1 = (float)i * 0.04f * 2.0f;
@@ -545,9 +542,9 @@ int main(int argc, char const *argv[])
         // printf("%dsin(%.3fπ)+%dsin(%.3fπ)=%.3f\n", sin_A, PI_ratio1, sin_A, PI_ratio2, val);
         // st_complex cpx = {val};
         // adc_val_array[i] = cpx;
-    }
-    DFFT(adc_val_array, array_size);
-    _print_complex_array(adc_val_array, array_size);
+    // }
+    // DFFT(adc_val_array, array_size);
+    // _print_complex_array(adc_val_array, array_size);
 
     // DFFT_sort_array(adc_val_array, array_size);
     // for (int i = 0; i < array_size; i++)
@@ -562,4 +559,4 @@ int main(int argc, char const *argv[])
     // dist_array[0] = dist1;
     // dist_array[1] = dist2;
     // _print_complex_array(dist_array, 2);
-}
+// }
