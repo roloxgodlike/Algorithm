@@ -137,4 +137,14 @@ int main(int argc, char const *argv[])
     IDFFT(adc_val_array, array_size);
     printf("----------------IDFFT Result---------------\n");
     _print_complex_array(adc_val_array, array_size);
+
+    float signal_v = 10.0f;
+    float noise_v = 5.0f;
+    float r = 1.0f;
+
+    float snr = 20 * log10f(signal_v / noise_v);
+    printf("snr-v: %.3f\n", snr);
+    snr = 10 * log10f(signal_v * signal_v / noise_v * noise_v);
+    printf("snr-p: %.3f\n", snr);
+
 }

@@ -1,0 +1,15 @@
+%%
+clc;
+clear;
+N=128;
+%产生一段长度为N，均值为0，方差为1的高斯白噪声序列
+v=randn(1,N);
+%产生长度为N的三个实正弦序列（数字频率ω分别为0.1、0.25、0.27，信噪比分别为30dB、30dB、27dB）
+i=1:N;
+u1=sin(2*pi*0.1*i);u2=sin(2*pi*0.25*i);u3=sin(2*pi*0.27*i);
+U1=awgn(u1,30);U2=awgn(u2,30);U3=awgn(u3,27);
+%三个实正弦序列和实高斯白噪声序列进行叠加得到观测信号uN(n)
+uN=v+U1+U2+U3;
+uN=uN';
+subplot(2,2,1);plot(i,uN);title('原信号 N=128');
+save uN.txt -ascii uN;
