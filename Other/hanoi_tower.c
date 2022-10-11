@@ -70,7 +70,7 @@ int main(void)
     //盘子数量, 全在柱子1, 需移到柱子3
     int plate_sum = 3;
 
-    printf("盘子数: %d, 共需移: %d步\n", plate_sum, get_move_steps(plate_sum));
+    printf("盘子数:%d, 共需移:%d步\n", plate_sum, get_move_steps(plate_sum));
 
     solve_hanoi_tower(column1, column2, column3, plate_sum);
 }
